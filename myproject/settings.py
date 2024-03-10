@@ -133,16 +133,43 @@ AWS_SECRET_ACCESS_KEY = '2DZ3KQfQoFg3lRhHIoNmdNRQXkeOMCjR+RF54G+T'
 AWS_STORAGE_BUCKET_NAME = 'test-storage777'
 AWS_S3_REGION_NAME = 'ap-south-1'  # e.g., 'us-west-2'
 
-# THIS ONE IS REALLY IMPORTANT OTHERWISE IT WILL THROW ACCESS DENIED
-AWS_DEFAULT_ACL = None
+# # THIS ONE IS REALLY IMPORTANT OTHERWISE IT WILL THROW ACCESS DENIED
+# AWS_DEFAULT_ACL = None
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
-# FOR MAKING THE STATIC FILE COME FROM S3
-# Static files (CSS, JavaScript, images)
+# # FOR MAKING THE STATIC FILE COME FROM S3
+# # Static files (CSS, JavaScript, images)
 # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 # # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}'
 # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # AWS_DEFAULT_ACL = None
+
+import os
+
+USE_S3 = True
+
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = 'AKIA3NBUNS5N2U5H5KZC'
+    AWS_SECRET_ACCESS_KEY = '2DZ3KQfQoFg3lRhHIoNmdNRQXkeOMCjR+RF54G+T'
+    AWS_STORAGE_BUCKET_NAME = 'test-storage777'
+    AWS_S3_REGION_NAME = 'ap-south-1'  # e.g., 'us-west-2'
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+
+    # be careful with the following one because it will change the url you are accessing the data from s3
+    # AWS_LOCATION = 'static'
+
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_DEFAULT_ACL = None
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# nice try okay better luck next time
